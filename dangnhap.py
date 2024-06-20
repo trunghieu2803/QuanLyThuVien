@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         self.label_2.setGeometry(QtCore.QRect(10, 30, 341, 221))
         self.label_2.setFocusPolicy(QtCore.Qt.FocusPolicy.TabFocus)
         self.label_2.setText("")
-        self.label_2.setPixmap(QtGui.QPixmap(":/Images/iconlogo.png"))
+        self.label_2.setPixmap(QtGui.QPixmap("Images/iconlogo.png"))
         self.label_2.setScaledContents(True)
         self.label_2.setObjectName("label_2")
         self.frame_3 = QtWidgets.QFrame(parent=self.centralwidget)
