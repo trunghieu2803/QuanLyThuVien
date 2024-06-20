@@ -1,0 +1,27 @@
+<RCC>
+  <qresource>
+    <file>3q.png</file>
+    <file>AVTM.png</file>
+    <file>barcode.png</file>
+    <file>book.png</file>
+    <file>bookicon.png</file>
+    <file>bookicon2.png</file>
+    <file>chuong.png</file>
+    <file>clienticon.png</file>
+    <file>email.png</file>
+    <file>femaleavt.png</file>
+    <file>hidepass.png</file>
+    <file>icon_loginbg.png</file>
+    <file>iconlogo.png</file>
+    <file>iconstaffman.png</file>
+    <file>logoimg.png</file>
+    <file>maleavt.png</file>
+    <file>Resource.qrc</file>
+    <file>set.png</file>
+    <file>showpass.png</file>
+    <file>tdk.png</file>
+    <file>thungrac.png</file>
+    <file>tick.png</file>
+    <file>timkiem.png</file>
+  </qresource>
+</RCC>
