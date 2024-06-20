@@ -250,7 +250,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../DoAnPyThon/QuanLyThuVien/Resources/bookicon.png</pixmap>
+         <pixmap resource="Resource.qrc">Images/bookicon.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -324,7 +324,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../DoAnPyThon/QuanLyThuVien/Resources/bookicon.png</pixmap>
+         <pixmap resource="Resource.qrc">Images/bookicon.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -398,7 +398,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../DoAnPyThon/QuanLyThuVien/Resources/clienticon.png</pixmap>
+         <pixmap resource="Resource.qrc">Images/clienticon.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -472,7 +472,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../DoAnPyThon/QuanLyThuVien/Resources/bookicon2.png</pixmap>
+         <pixmap resource="Resource.qrc">Images/bookicon2.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -546,7 +546,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap>../DoAnPyThon/QuanLyThuVien/Resources/bookicon2.png</pixmap>
+         <pixmap resource="Resource.qrc">Images/bookicon2.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -2327,7 +2327,7 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="../DoAnPyThon/QuanLyThuVien/Resources/Resource.qrc"/>
+  <include location="Resource.qrc"/>
  </resources>
  <connections/>
 </ui>
