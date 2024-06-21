@@ -195,7 +195,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tw1">
       <attribute name="title">
@@ -250,7 +250,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="Resource.qrc">Images/bookicon.png</pixmap>
+         <pixmap>Images/bookicon.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -324,7 +324,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="Resource.qrc">Images/bookicon.png</pixmap>
+         <pixmap>Images/bookicon.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -398,7 +398,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="Resource.qrc">Images/clienticon.png</pixmap>
+         <pixmap>Images/clienticon.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -472,7 +472,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="Resource.qrc">Images/bookicon2.png</pixmap>
+         <pixmap>Images/bookicon2.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -546,7 +546,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="Resource.qrc">Images/bookicon2.png</pixmap>
+         <pixmap>Images/bookicon2.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>
@@ -582,7 +582,7 @@
          <x>10</x>
          <y>40</y>
          <width>791</width>
-         <height>211</height>
+         <height>221</height>
         </rect>
        </property>
        <property name="font">
@@ -597,7 +597,7 @@
         <property name="geometry">
          <rect>
           <x>50</x>
-          <y>50</y>
+          <y>30</y>
           <width>81</width>
           <height>16</height>
          </rect>
@@ -609,63 +609,78 @@
        <widget class="QLabel" name="label_5">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>90</y>
+          <x>48</x>
+          <y>70</y>
           <width>81</width>
           <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>Thể loại :</string>
+         <string>Tên Sách:</string>
         </property>
        </widget>
        <widget class="QLabel" name="label_6">
         <property name="geometry">
          <rect>
-          <x>50</x>
-          <y>130</y>
+          <x>48</x>
+          <y>110</y>
           <width>81</width>
           <height>16</height>
          </rect>
         </property>
         <property name="text">
-         <string>Giá tiền :</string>
+         <string>Tác giả:</string>
         </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit">
+       <widget class="QLineEdit" name="txtMaSach">
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>40</y>
+          <y>20</y>
           <width>221</width>
           <height>31</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_2">
+       <widget class="QLineEdit" name="txtTensach">
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>80</y>
+          <y>60</y>
           <width>221</width>
           <height>31</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
        </widget>
-       <widget class="QLineEdit" name="lineEdit_3">
+       <widget class="QLineEdit" name="txtTacGia">
         <property name="geometry">
          <rect>
           <x>140</x>
-          <y>120</y>
+          <y>100</y>
           <width>221</width>
           <height>31</height>
          </rect>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="btnShowAllBook">
         <property name="geometry">
          <rect>
-          <x>430</x>
+          <x>458</x>
           <y>37</y>
           <width>141</width>
           <height>31</height>
@@ -675,23 +690,10 @@
          <string>Xem tất cả</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_8">
+       <widget class="QPushButton" name="btnAddBook">
         <property name="geometry">
          <rect>
-          <x>600</x>
-          <y>37</y>
-          <width>141</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Xem chi tiết</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_9">
-        <property name="geometry">
-         <rect>
-          <x>430</x>
+          <x>458</x>
           <y>80</y>
           <width>141</width>
           <height>31</height>
@@ -701,30 +703,114 @@
          <string>Thêm sách</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_11">
+       <widget class="QPushButton" name="btnDeleteBook">
         <property name="geometry">
          <rect>
-          <x>430</x>
-          <y>120</y>
+          <x>612</x>
+          <y>37</y>
           <width>141</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
-         <string>Nhập hàng</string>
+         <string>Xóa</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_12">
+       <widget class="QPushButton" name="btnUpdateBook">
         <property name="geometry">
          <rect>
-          <x>600</x>
-          <y>80</y>
+          <x>612</x>
+          <y>81</y>
           <width>141</width>
           <height>31</height>
          </rect>
         </property>
         <property name="text">
          <string>Cập nhật</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="txtGiaTien">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>140</y>
+          <width>221</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>150</y>
+          <width>81</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Giá:</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="txtSoLuong">
+        <property name="geometry">
+         <rect>
+          <x>139</x>
+          <y>180</y>
+          <width>221</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_11">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>187</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Số lượng:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="btnSearchBook">
+        <property name="geometry">
+         <rect>
+          <x>610</x>
+          <y>180</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Tìm Kiếm</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="txtSearchBook">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>180</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
         </property>
        </widget>
       </widget>
@@ -763,7 +849,7 @@
        <property name="title">
         <string>Thông tin sản phẩm</string>
        </property>
-       <widget class="QTableWidget" name="tableWidget">
+       <widget class="QTableWidget" name="tableBook">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -772,31 +858,6 @@
           <height>261</height>
          </rect>
         </property>
-        <column>
-         <property name="text">
-          <string>Mã sách</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Tên sách</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Tác giả</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Giá</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Số lượng</string>
-         </property>
-        </column>
        </widget>
       </widget>
      </widget>
@@ -822,7 +883,7 @@
         <string/>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="tab_4">
         <attribute name="title">
@@ -2326,6 +2387,84 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>btnSach</tabstop>
+  <tabstop>btnTaiKhoan</tabstop>
+  <tabstop>btnHoaDon</tabstop>
+  <tabstop>btnMuonTra</tabstop>
+  <tabstop>btnDangXuat</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>txtMaSach</tabstop>
+  <tabstop>txtTensach</tabstop>
+  <tabstop>txtTacGia</tabstop>
+  <tabstop>txtGiaTien</tabstop>
+  <tabstop>txtSoLuong</tabstop>
+  <tabstop>btnShowAllBook</tabstop>
+  <tabstop>btnAddBook</tabstop>
+  <tabstop>btnDeleteBook</tabstop>
+  <tabstop>btnUpdateBook</tabstop>
+  <tabstop>tabWidget_2</tabstop>
+  <tabstop>lineEdit_6</tabstop>
+  <tabstop>lineEdit_7</tabstop>
+  <tabstop>lineEdit_8</tabstop>
+  <tabstop>lineEdit_9</tabstop>
+  <tabstop>lineEdit_10</tabstop>
+  <tabstop>lineEdit_11</tabstop>
+  <tabstop>lineEdit_12</tabstop>
+  <tabstop>lineEdit_13</tabstop>
+  <tabstop>lineEdit_14</tabstop>
+  <tabstop>pushButton_13</tabstop>
+  <tabstop>pushButton_16</tabstop>
+  <tabstop>pushButton_17</tabstop>
+  <tabstop>pushButton_18</tabstop>
+  <tabstop>lineEdit_15</tabstop>
+  <tabstop>tableWidget_3</tabstop>
+  <tabstop>lineEdit_16</tabstop>
+  <tabstop>tableWidget_4</tabstop>
+  <tabstop>lineEdit_17</tabstop>
+  <tabstop>lineEdit_18</tabstop>
+  <tabstop>lineEdit_19</tabstop>
+  <tabstop>lineEdit_20</tabstop>
+  <tabstop>lineEdit_21</tabstop>
+  <tabstop>lineEdit_22</tabstop>
+  <tabstop>lineEdit_23</tabstop>
+  <tabstop>lineEdit_24</tabstop>
+  <tabstop>lineEdit_25</tabstop>
+  <tabstop>pushButton_19</tabstop>
+  <tabstop>pushButton_20</tabstop>
+  <tabstop>pushButton_21</tabstop>
+  <tabstop>pushButton_22</tabstop>
+  <tabstop>lineEdit_26</tabstop>
+  <tabstop>lineEdit_27</tabstop>
+  <tabstop>lineEdit_28</tabstop>
+  <tabstop>lineEdit_29</tabstop>
+  <tabstop>lineEdit_30</tabstop>
+  <tabstop>lineEdit_31</tabstop>
+  <tabstop>lineEdit_32</tabstop>
+  <tabstop>lineEdit_33</tabstop>
+  <tabstop>lineEdit_34</tabstop>
+  <tabstop>pushButton_23</tabstop>
+  <tabstop>pushButton_24</tabstop>
+  <tabstop>pushButton_25</tabstop>
+  <tabstop>lineEdit_35</tabstop>
+  <tabstop>tableWidget_5</tabstop>
+  <tabstop>lineEdit_4</tabstop>
+  <tabstop>pushButton_10</tabstop>
+  <tabstop>pushButton_14</tabstop>
+  <tabstop>pushButton_15</tabstop>
+  <tabstop>dateEdit</tabstop>
+  <tabstop>lineEdit_5</tabstop>
+  <tabstop>tableWidget_2</tabstop>
+  <tabstop>tabWidget_3</tabstop>
+  <tabstop>lineEdit_36</tabstop>
+  <tabstop>tableWidget_6</tabstop>
+  <tabstop>tableWidget_7</tabstop>
+  <tabstop>lineEdit_37</tabstop>
+  <tabstop>tableWidget_8</tabstop>
+  <tabstop>tableWidget_9</tabstop>
+  <tabstop>btnTrangChu</tabstop>
+  <tabstop>tableBook</tabstop>
+ </tabstops>
  <resources>
   <include location="Resource.qrc"/>
  </resources>
