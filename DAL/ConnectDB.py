@@ -11,7 +11,7 @@ def connect_db():
 def CheckLogin(tk, mk):
     db = connect_db()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM taikhoan WHERE username = %s AND password = %s", (tk, mk))
+    cursor.execute("SELECT * FROM nhanvien WHERE tendangnhap = %s AND matkhau = %s", (tk, mk))
     result = cursor.fetchone()
     return result
 
