@@ -55,3 +55,21 @@ def SearchBook(matenSach):
     rs = cs.fetchall()
     conn.close()
     return rs
+
+import openpyxl
+def XuatFileBook():
+    conn = ConnectDB.connect_db()
+    cs = conn.cursor()
+    qr = "SELECT * FROM sach"
+    cs.execute(qr)
+    rs = cs.fetchall()
+    conn.close()
+
+    wb = openpyxl.Workbook()
+    ws = wb.active
+
+    ws.append(['Mã sách', 'Tên sách', 'Tên tác giả', 'Giá', 'Số lượng'])
+    for row in rs:
+        ws.append(row)
+
+    wb.save('DanhSachSach.xlsx')

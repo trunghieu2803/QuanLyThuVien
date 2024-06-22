@@ -195,7 +195,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tw1">
       <attribute name="title">
@@ -813,6 +813,19 @@
          </font>
         </property>
        </widget>
+       <widget class="QPushButton" name="btnXuatFile">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>120</y>
+          <width>141</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Xuất File</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QLabel" name="label_3">
        <property name="geometry">
@@ -865,7 +878,7 @@
       <attribute name="title">
        <string>taikhoan</string>
       </attribute>
-      <widget class="QTabWidget" name="tabWidget_2">
+      <widget class="QTabWidget" name="btnAccount">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -883,7 +896,7 @@
         <string/>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="tab_4">
         <attribute name="title">
@@ -2388,7 +2401,6 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
-  <tabstop>btnSach</tabstop>
   <tabstop>btnTaiKhoan</tabstop>
   <tabstop>btnHoaDon</tabstop>
   <tabstop>btnMuonTra</tabstop>
@@ -2403,8 +2415,8 @@
   <tabstop>btnAddBook</tabstop>
   <tabstop>btnDeleteBook</tabstop>
   <tabstop>btnUpdateBook</tabstop>
-  <tabstop>tabWidget_2</tabstop>
-  <tabstop>lineEdit_6</tabstop>
+  <tabstop>btnAccount</tabstop>
+  <tabstop>btnXuatFile</tabstop>
   <tabstop>lineEdit_7</tabstop>
   <tabstop>lineEdit_8</tabstop>
   <tabstop>lineEdit_9</tabstop>
@@ -2413,6 +2425,7 @@
   <tabstop>lineEdit_12</tabstop>
   <tabstop>lineEdit_13</tabstop>
   <tabstop>lineEdit_14</tabstop>
+  <tabstop>btnSearchBook</tabstop>
   <tabstop>pushButton_13</tabstop>
   <tabstop>pushButton_16</tabstop>
   <tabstop>pushButton_17</tabstop>
@@ -2464,6 +2477,9 @@
   <tabstop>tableWidget_9</tabstop>
   <tabstop>btnTrangChu</tabstop>
   <tabstop>tableBook</tabstop>
+  <tabstop>lineEdit_6</tabstop>
+  <tabstop>txtSearchBook</tabstop>
+  <tabstop>btnSach</tabstop>
  </tabstops>
  <resources>
   <include location="Resource.qrc"/>

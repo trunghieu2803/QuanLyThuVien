@@ -38,7 +38,7 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         self.btnAddBook.clicked.connect(self.AddBook)
         self.btnShowAllBook.clicked.connect(self.ShowBooks)
         self.btnSearchBook.clicked.connect(self.searchBook)
-
+        self.btnXuatFile.clicked.connect(self.PrintBooktoExcel)
 
 
         self.btnTrangChu.clicked.connect(self.switch_to_tranCchuPage)
@@ -158,7 +158,11 @@ class MySideBar(QMainWindow, Ui_MainWindow):
             for column_number, data in enumerate(row_data):
                 self.tableBook.setItem(row_number, column_number, ip.QTableWidgetItem(str(data)))
 
+    def PrintBooktoExcel(self):
+        ip.DAL_Sach.XuatFileBook()
 
+
+        
 app = QApplication(ip.sys.argv)
 widget = ip.QtWidgets.QStackedWidget()
 login_f = login()
