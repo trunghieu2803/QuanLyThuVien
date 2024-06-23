@@ -8,6 +8,7 @@ class login(QMainWindow):
         ip.uic.loadUi('dangnhap.ui', self) 
         self.btnDangNhap.clicked.connect(self.CheckLogin)
 
+
     #kiểm tra tài khoản    
     def CheckLogin(self):
         result = ip.ConnectDB.CheckLogin(self.txbtaikhoan.text(), self.txbmatkhau.text())
@@ -41,6 +42,8 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         self.btnShowAllBook.clicked.connect(self.ShowBooks)
         self.btnSearchBook.clicked.connect(self.searchBook)
         self.btnXuatFile.clicked.connect(self.PrintBooktoExcel)
+        self.txtSearchBook.textChanged.connect(self.searchBook)
+
 
 
 
@@ -53,6 +56,24 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         self.btnUpdateNV.clicked.connect(self.UpdateNhanVien)
         self.btnSearchNV.clicked.connect(self.searchNhanVien)
         self.btnXuatFileNV.clicked.connect(self.PrintNhanVientoExcel)
+        self.txtSearchNV.textChanged.connect(self.searchNhanVien)
+
+
+
+
+        #Chức năng độc giả
+        self.ShowALLDocGia()
+        self.btnShowAllDG.clicked.connect(self.ShowALLDocGia)
+        self.tableDocGia.cellClicked.connect(self.tableDocGia_Clicked)
+        self.btnAddDG.clicked.connect(self.AddDocGia)
+        self.btnDeleteDG.clicked.connect(self.DeleteDocGia)
+        self.btnUpdateDG.clicked.connect(self.UpdateDocGia)
+        self.btnSearchDG.clicked.connect(self.SearchDocGia)
+        self.btnXuatFileDG.clicked.connect(self.PrintDocGiatoExcel)
+        self.txtSearchDG.textChanged.connect(self.SearchDocGia)
+
+
+
 
         #chuyển trang
         self.btnTrangChu.clicked.connect(self.switch_to_trangchuPage)
@@ -318,6 +339,115 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         ip.DAL_NhanVien.XuatFileNhanVien()
 
 #endregion   ########################### End Nhân Viên ##################     
+
+#region ###################### ĐỘC GIẢ ################################
+
+    def ShowALLDocGia(self):
+            self.tableDocGia.setRowCount(ip.DAL_DocGia.showAllDocGia().__len__())
+            self.tableDocGia.setColumnCount(5)
+            self.tableDocGia.setHorizontalHeaderLabels(["Mã độc giả", "Tên độc giả", "Địa chỉ",
+                                                        "Giới tính", "Số điện thoại"])
+            table_row = 0
+            for row in ip.DAL_DocGia.showAllDocGia():
+                self.tableDocGia.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+                self.tableDocGia.setItem(table_row, 1, ip.QTableWidgetItem(str(row[1])))
+                self.tableDocGia.setItem(table_row, 2, ip.QTableWidgetItem(str(row[2])))
+                self.tableDocGia.setItem(table_row, 3, ip.QTableWidgetItem(str(row[3])))
+                self.tableDocGia.setItem(table_row, 4, ip.QTableWidgetItem(str(row[4])))
+                table_row += 1
+
+
+    def tableDocGia_Clicked(self, row, column):
+        self.txtMaDG.setText(self.tableDocGia.item(row, 0).text())
+        self.txtHoTenDG.setText(self.tableDocGia.item(row, 1).text())
+        self.txtDiaChiDG.setText(self.tableDocGia.item(row, 2).text())
+        #Xử lí click vào cell  nào thì combobox hiện lên thông tin đấy
+        gioitinh = self.tableDocGia.item(row, 3).text()
+        for i in range(self.cbbgioitinhDG.count()):
+            if(gioitinh == self.cbbgioitinhDG.itemText(i)):
+                self.cbbgioitinhDG.setCurrentIndex(i)
+        #----------------
+        self.txtSDTDG.setText(self.tableDocGia.item(row, 4).text())
+
+    
+    def SetDefaultDocgiaTxt(self):
+        self.txtMaDG.setText("")
+        self.txtHoTenDG.setText("")
+        self.txtDiaChiDG.setText("")
+        self.cbbgioitinhDG.setCurrentIndex(0)
+        self.txtSDTDG.setText("")
+        self.check = True
+
+
+    def AddDocGia(self):
+        if(self.check == True):
+            self.ShowALLDocGia()
+            table_row = ip.DAL_DocGia.showAllDocGia()[ip.DAL_DocGia.showAllDocGia().__len__() - 1]
+            maDG = table_row[0] + 1
+            self.txtMaDG.setText(str(maDG))
+            self.txtHoTenDG.setText("")
+            self.txtDiaChiDG.setText("")
+            self.cbbgioitinhDG.setCurrentIndex(0)
+            self.txtSDTDG.setText("")
+            self.check = False
+            self.btnAddDG.setText("Lưu")
+        else:
+            ma = self.txtMaDG.text()
+            ten = self.txtHoTenDG.text()
+            diaChi = self.txtDiaChiDG.text()
+            gioiTinh = self.cbbgioitinhDG.currentText()
+            sdt = self.txtSDTDG.text()
+            kt = ip.DAL_DocGia.AddDocGia(ma, ten, diaChi, gioiTinh, sdt)
+            if kt == 1:
+                ip.QMessageBox.information(self, "Thông báo", "Thêm thành công!")
+                self.ShowALLDocGia()
+                self.SetDefaultDocgiaTxt()
+                self.btnAddDG.setText("Thêm Nhân viên")
+            else:
+                ip.QMessageBox.information(self, "Thông báo", "Thêm không thành công!")
+
+
+    def DeleteDocGia(self):
+        txtMaDG = self.txtMaDG.text()
+        kt = ip.DAL_DocGia.DeleteDocGia(txtMaDG)
+        if kt == 1:
+            ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
+            self.ShowALLDocGia()
+            self.SetDefaultDocgiaTxt()
+        else:
+            ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
+
+    def UpdateDocGia(self):
+        ma = self.txtMaDG.text()
+        ten = self.txtHoTenDG.text()
+        diaChi = self.txtDiaChiDG.text()
+        gioiTinh = self.cbbgioitinhDG.currentText()
+        sdt = self.txtSDTDG.text()
+
+        kt = ip.DAL_DocGia.UpdateDocGia(ma, ten, diaChi, gioiTinh, sdt)
+        if kt == 1:
+            ip.QMessageBox.information(self, "Thông báo", "update thành công!")
+            self.ShowALLDocGia()
+        else:
+            ip.QMessageBox.information(self, "Thông báo", "update không thành công!")
+
+
+    def SearchDocGia(self):
+        maTenDocGia = self.txtSearchDG.text()
+        data = ip.DAL_DocGia.SearchDocGia(maTenDocGia)
+        self.tableDocGia.setRowCount(0)
+        for row_number, row_data in enumerate(data):
+            self.tableDocGia.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableDocGia.setItem(row_number, column_number, ip.QTableWidgetItem(str(data)))
+
+    #in sách ra excel
+    def PrintDocGiatoExcel(self):
+        ip.DAL_DocGia.XuatFileDocGia()
+#endregion ######################## END ĐỘC GIẢ ########################
+
+
+
 
 
 app = QApplication(ip.sys.argv)

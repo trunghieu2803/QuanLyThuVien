@@ -1,6 +1,7 @@
 from DAL import ConnectDB
 from DAL import DAL_Sach
 from DAL import DAL_NhanVien
+from DAL import DAL_DocGia
 from PyQt6 import  QtCore, QtGui, QtWidgets, uic
 from PyQt6.QtWidgets import *
 from PyQt6.uic import loadUi

@@ -1689,7 +1689,7 @@
          <property name="title">
           <string>Danh sách độc giả</string>
          </property>
-         <widget class="QTableWidget" name="tableNV_2">
+         <widget class="QTableWidget" name="tableDocGia">
           <property name="geometry">
            <rect>
             <x>10</x>
