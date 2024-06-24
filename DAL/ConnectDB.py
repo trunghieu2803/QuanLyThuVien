@@ -13,5 +13,5 @@ def CheckLogin(tk, mk):
     cursor = db.cursor()
     cursor.execute("SELECT * FROM nhanvien WHERE tendangnhap = %s AND matkhau = %s", (tk, mk))
     result = cursor.fetchone()
-    return result
+    return result[8]
 

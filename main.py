@@ -2,37 +2,45 @@ from PyQt6.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget
 import ip
 from ChucNang import Ui_MainWindow
 from PyQt6.QtCore import QDate
-class login(QMainWindow):
+class Login(QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super(login, self).__init__()
+        super(Login, self).__init__()
         ip.uic.loadUi('dangnhap.ui', self) 
-        self.btnDangNhap.clicked.connect(self.CheckLogin)
 
+        self.btnDangNhap.clicked.connect(self.CheckLogin)
 
     #kiểm tra tài khoản    
     def CheckLogin(self):
-        result = ip.ConnectDB.CheckLogin(self.txbtaikhoan.text(), self.txbmatkhau.text())
-        if result:
-            widget.setFixedHeight(722)
-            widget.setFixedWidth(1007)
-            widget.move(250, 50)
-            widget.setCurrentIndex(1)
-        else:
+        try:
+            result = ip.ConnectDB.CheckLogin(self.txbtaikhoan.text(), self.txbmatkhau.text())
+            if result:
+                self.txbtaikhoan.setText("")
+                self.txbmatkhau.setText("")
+                ip.glchucvu = result
+                if ip.glchucvu == "Thủ thư":
+                    ip.checkChucVu = False
+                else:
+                    ip.checkChucVu = True
+                widget.setFixedHeight(722)
+                widget.setFixedWidth(1007)
+                widget.move(250, 50)
+                mainGui_f = MySideBar()
+                widget.addWidget(mainGui_f)
+                widget.setCurrentIndex(1)
+        except:
             ip.QMessageBox.information(self, "Thông báo", "Tài khoản hoặc mật khẩu không đúng")
-            return False
-
 
 
 class MySideBar(QMainWindow, Ui_MainWindow):
    
     def __init__(self):
         self.check = True
+        self.is_handling_event = False
         super(MySideBar, self).__init__()
         ip.uic.loadUi('ChucNang.ui', self)
         self.setWindowTitle("SideBar Menu")
+
         self.switch_to_trangchuPage()
-
-
         #chuc nang Book
         self.ShowBooks()
         self.tableBook.cellClicked.connect(self.tableBooks_Clicked)
@@ -74,32 +82,82 @@ class MySideBar(QMainWindow, Ui_MainWindow):
 
 
 
+        #chức năng hóa đơn
+        self.ShowALLHoaDonMT()
+        self.btnShowAllHD.clicked.connect(self.ShowALLHoaDonMT)
+        self.tableHoaDon.cellClicked.connect(self.tableHoaDonMT_Clicked)
+        self.btnAddHD.clicked.connect(self.AddHoaDon)
+        self.cbbDGHD.currentIndexChanged.connect(self.on_cbbDGHD_changed)
+        self.cbbMNVHD.currentIndexChanged.connect(self.on_cbbMNVHD_changed)
+        self.btnDeleteHD.clicked.connect(self.DeleteHoaDon)
+        self.btnUpdateHD.clicked.connect(self.UpdateHoaDon)
+        self.btnSearchHD.clicked.connect(self.SearchHoaDon)
+        # self.btnXuatFileDG.clicked.connect(self.PrintDocGiatoExcel)
+        self.txtSearchHD.textChanged.connect(self.SearchHoaDon)
+
+
+        #Chức năng Chi tiết hóa đơn
+        self.ShowALLCTHoaDonMT()
+        self.btnShowAllCTHD.clicked.connect(self.ShowALLCTHoaDonMT)
+        self.tableCTHD.cellClicked.connect(self.tableCTHoaDonMT_Clicked)
+        self.btnAddCTHD.clicked.connect(self.AddCTHoaDonMuontra)
+        self.cbbMHDCTHD.currentIndexChanged.connect(self.ShowALLCTHoaDonByMaMuonTraMT)
+        self.cbbMaSachCTHD.currentIndexChanged.connect(self.ShowSachBYMaSach)
+        self.btnDeleteCTHD.clicked.connect(self.DeleteCTHDByMaMuonTraMaSach)
+        self.btnUpdateCTHD.clicked.connect(self.UpdateCTHoaDonMuonTra)
+        self.btnSearchCTHD.clicked.connect(self.SearchCTHoaDonMuonTra)
+        self.txtSearchCTHD.textChanged.connect(self.SearchCTHoaDonMuonTra)
+        self.btnXuatFileCTHD.clicked.connect(self.PrintCTMuonTratoExcel)
+
+
 
         #chuyển trang
         self.btnTrangChu.clicked.connect(self.switch_to_trangchuPage)
         self.btnSach.clicked.connect(self.switch_to_sachPage)
         self.btnNhanVien.clicked.connect(self.switch_to_NhanVienPage)
         self.btnDocGia.clicked.connect(self.switch_to_DocgiaPage)
-        self.btnHoaDon.clicked.connect(self.switch_to_hoaDonPage)
-        self.btnCTHoaDon.clicked.connect(self.switch_to_cthoaDonPage)
+        self.btnHoaDonMuonTra.clicked.connect(self.switch_to_HoaDonMuonTraPage)
         self.btnMuonTra.clicked.connect(self.switch_to_muonTraPage)
-
+        self.btnDangXuat.clicked.connect(self.switch_to_DangXuatPage)
 
     def switch_to_trangchuPage(self):
+        print(ip.checkChucVu)
+        self.btnNhanVien.setEnabled(ip.checkChucVu)
         self.tabWidget.setCurrentIndex(0)
     def switch_to_sachPage(self):
+        self.ShowBooks()
         self.tabWidget.setCurrentIndex(1)
     def switch_to_NhanVienPage(self):
         self.tabWidget.setCurrentIndex(2)
     def switch_to_DocgiaPage(self):
-        self.tabWidget.setCurrentIndex(3)    
-    def switch_to_hoaDonPage(self):
-        self.tabWidget.setCurrentIndex(4)
-    def switch_to_cthoaDonPage(self):
-        self.tabWidget.setCurrentIndex(5)
+        self.tabWidget.setCurrentIndex(3) 
+    def switch_to_HoaDonMuonTraPage(self):
+        self.tabWidget.setCurrentIndex(4)   
     def switch_to_muonTraPage(self):
-        self.tabWidget.setCurrentIndex(6)
-    
+        self.ShowALLCTHoaDonMT()
+        self.tabWidget.setCurrentIndex(5)
+    def switch_to_DangXuatPage(self):
+        reply = ip.QMessageBox.question(self, 'Xác nhận', 
+                                     "Bạn có muốn đăng xuất không?", 
+                                     ip.QMessageBox.StandardButton.Yes | ip.QMessageBox.StandardButton.No, 
+                                     ip.QMessageBox.StandardButton.No)
+
+        if reply == ip.QMessageBox.StandardButton.Yes:
+            print("dang xuat " + str(ip.checkChucVu))
+            self.switch_to_trangchuPage()
+            ip.glchucvu = ""
+            widget.move(300, 200)
+            widget.setFixedHeight(436)
+            widget.setFixedWidth(877)
+            widget.setCurrentIndex(0)
+            print("Đăng xuất ngay!")
+        else:
+            print("Hủy đăng xuất")
+
+    def on_combobox_changed(self, index):
+        self.cbbgioitinhDG.clear()
+        selected_text = self.cbbgioitinhDG.currentText()
+        print(f"Bạn đã chọn: {selected_text}")    
     #Giao dien quan ly sach
 
 #region ###########################  BOOK ##################### 
@@ -402,7 +460,7 @@ class MySideBar(QMainWindow, Ui_MainWindow):
                 ip.QMessageBox.information(self, "Thông báo", "Thêm thành công!")
                 self.ShowALLDocGia()
                 self.SetDefaultDocgiaTxt()
-                self.btnAddDG.setText("Thêm Nhân viên")
+                self.btnAddDG.setText("Thêm độc giả")
             else:
                 ip.QMessageBox.information(self, "Thông báo", "Thêm không thành công!")
 
@@ -446,16 +504,385 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         ip.DAL_DocGia.XuatFileDocGia()
 #endregion ######################## END ĐỘC GIẢ ########################
 
+#region ##################### Hóa Đơn ###################################
+    
+    def ShowALLHoaDonMT(self):
+        self.cbbDGHD.clear()
+        self.cbbMNVHD.clear()
+        for i in range(ip.DAL_DocGia.showAllDocGia().__len__()):
+            self.cbbDGHD.addItem(str(i + 1))
 
+        for i in range(ip.DAL_NhanVien.showALLNhanVien().__len__()):
+            self.cbbMNVHD.addItem(str(i + 1))
+
+        self.tableHoaDon.setRowCount(ip.DAL_HoaDonMT.ShowAllHDMuonTra().__len__())
+        self.tableHoaDon.setColumnCount(5)
+        self.tableHoaDon.setHorizontalHeaderLabels(["mã hóa đơn", "Tên hóa đơn", "Ngày mượn",
+                                                    "Mã độc giả", "Mã nhân viên"])
+        table_row = 0
+        for row in ip.DAL_HoaDonMT.ShowAllHDMuonTra():
+            self.tableHoaDon.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+            self.tableHoaDon.setItem(table_row, 1, ip.QTableWidgetItem(str(row[1])))
+            self.tableHoaDon.setItem(table_row, 2, ip.QTableWidgetItem(str(row[2])))
+            self.tableHoaDon.setItem(table_row, 3, ip.QTableWidgetItem(str(row[3])))
+            self.tableHoaDon.setItem(table_row, 4, ip.QTableWidgetItem(str(row[4])))
+            table_row += 1
+
+    def tableHoaDonMT_Clicked(self, row, column):
+        dateFirt = ip.QDate.fromString(self.tableHoaDon.item(row, 2).text(), "yyyy-MM-dd")
+        self.txtMaHD.setText(self.tableHoaDon.item(row, 0).text())
+        self.txtTenHD.setText(self.tableHoaDon.item(row, 1).text())
+        self.dateNgayMuonHD.setDate(dateFirt)
+        #Xử lí click vào cell  nào thì combobox hiện lên thông tin đấy
+        maDocGia = self.tableHoaDon.item(row, 3).text()
+        for i in range(self.cbbDGHD.count()):
+            if(maDocGia == self.cbbDGHD.itemText(i)):
+                self.cbbDGHD.setCurrentIndex(i)
+                self.txtTenDocGiaHD.setText(ip.DAL_DocGia.SearchMaDocGia(str(i+1))[0][1])
+        #----------------
+        
+        maNhanVien = self.tableHoaDon.item(row, 4).text()
+        for i in range(self.cbbMNVHD.count()):
+            if(maNhanVien == self.cbbMNVHD.itemText(i)):
+                self.cbbMNVHD.setCurrentIndex(i)
+                self.txtNhanVienLapHoaDon.setText(ip.DAL_NhanVien.SearchMaNhanVien(str(i+1))[0][1])
+
+
+    def SetDefaultHoaDonTxt(self):
+        self.txtMaHD.setText("")
+        self.txtTenHD.setText("")
+        self.dateNgayMuonHD.setDate(QDate(2024, 6, 22))
+        self.cbbDGHD.setCurrentIndex(0)
+        self.cbbMNVHD.setCurrentIndex(0)
+        self.txtTenDocGiaHD.setText("")
+        self.txtNhanVienLapHoaDon.setText("")
+        self.check = True
+
+
+    def AddHoaDon(self):
+        if(self.check == True):
+            self.ShowALLHoaDonMT()
+            table_row = ip.DAL_HoaDonMT.ShowAllHDMuonTra()[ip.DAL_HoaDonMT.ShowAllHDMuonTra().__len__() - 1]
+            maHD = table_row[0] + 1
+            self.txtMaHD.setText(str(maHD))
+            self.txtTenHD.setText("")
+            self.dateNgayMuonHD.setDate(QDate(2024, 6, 22))
+            self.cbbDGHD.setCurrentIndex(0)
+            self.cbbMNVHD.setCurrentIndex(0)
+            self.txtNhanVienLapHoaDon.setText("")
+            self.txtTenDocGiaHD.setText("")
+            self.check = False
+            self.btnAddHD.setText("Lưu")
+        else:
+            ma = self.txtMaHD.text()
+            ten = self.txtTenHD.text()
+            ngaymuon = self.dateNgayMuonHD.date().toString("yyyy-MM-dd")
+            maDG = self.cbbDGHD.currentText()
+            maNV = self.cbbMNVHD.currentText()
+            kt = ip.DAL_HoaDonMT.AddHoaDonMuonTra(ma, ten, ngaymuon, maDG, maNV)
+            print()
+            if kt == 1:
+                ip.QMessageBox.information(self, "Thông báo", "Thêm thành công!")
+                self.ShowALLHoaDonMT()
+                self.SetDefaultHoaDonTxt()
+                self.btnAddHD.setText("Thêm")
+            else:
+                ip.QMessageBox.information(self, "Thông báo", "Thêm không thành công!")
+
+
+    def on_cbbDGHD_changed(self, index):
+        selected_text = self.cbbDGHD.currentText()
+        self.txtTenDocGiaHD.setText(ip.DAL_DocGia.SearchMaDocGia(str(selected_text))[0][1]) 
+    def on_cbbMNVHD_changed(self, index):
+        selected_text = self.cbbMNVHD.currentText()
+        self.txtNhanVienLapHoaDon.setText(ip.DAL_NhanVien.SearchMaNhanVien(str(selected_text))[0][1]) 
+
+
+    def DeleteHoaDon(self):
+        txtMaHD = self.txtMaHD.text()
+        kt = ip.DAL_HoaDonMT.DeleteHoaDonMuonTra(txtMaHD)
+        if kt == 1:
+            ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
+            self.ShowALLHoaDonMT()
+            self.SetDefaultHoaDonTxt()
+        else:
+            ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
+
+
+    def UpdateHoaDon(self):
+        ma = self.txtMaHD.text()
+        ten = self.txtTenHD.text()
+        ngaymuon = self.dateNgayMuonHD.date().toString("yyyy-MM-dd")
+        maDG = self.cbbDGHD.currentText()
+        maNV = self.cbbMNVHD.currentText()
+
+        kt = ip.DAL_HoaDonMT.UpdateHoaDonMuonTra(ma, ten, ngaymuon, maDG, maNV)
+        if kt == 1:
+            ip.QMessageBox.information(self, "Thông báo", "update thành công!")
+            self.SetDefaultHoaDonTxt()
+            self.ShowALLHoaDonMT()
+        else:
+            ip.QMessageBox.information(self, "Thông báo", "update không thành công!")
+
+    def SearchHoaDon(self):
+        maTenHoadon = self.txtSearchHD.text()
+        data = ip.DAL_HoaDonMT.SearchHoaDon(maTenHoadon)
+        self.tableHoaDon.setRowCount(0)
+        for row_number, row_data in enumerate(data):
+            self.tableHoaDon.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.tableHoaDon.setItem(row_number, column_number, ip.QTableWidgetItem(str(data)))
+#endregion ######################### End Hóa Đơn #############################################
+
+#region ##################### Chi tiết hóa đơn ##############################
+    def ShowALLCTHoaDonMT(self):
+        sum = 0
+        self.cbbMHDCTHD.clear()
+        self.cbbMaSachCTHD.clear()
+
+        for i in range(ip.DAL_HoaDonMT.ShowAllHDMuonTra().__len__()):
+            self.cbbMHDCTHD.addItem(str(ip.DAL_HoaDonMT.ShowAllHDMuonTra()[i][0]))
+        
+        for i in range(ip.DAL_Sach.showBookAll().__len__()):
+            self.cbbMaSachCTHD.addItem(str(ip.DAL_Sach.showBookAll()[i][0]))
+
+        self.tableCTHD.setRowCount(ip.DAL_ChiTietHoaDonMT.ShowAllCTHDMuonTra().__len__())
+        self.tableCTHD.setColumnCount(12)
+        self.tableCTHD.setHorizontalHeaderLabels(["mã hóa đơn", "Mã độc giả", "Mã nhân viên", "Mã sách",
+                                                    "Tên sách", "Tên tác giả", "Giá", "Số lương",
+                                                    "Ngày mượn, Ngày trả dự kiến, Ngày trả thực tế", "Trạng thái"])
+        table_row = 0
+        for row in ip.DAL_ChiTietHoaDonMT.ShowAllCTHDMuonTra():
+            self.tableCTHD.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+            for i in ip.DAL_HoaDonMT.ShowAll(str(row[0])):
+                self.tableCTHD.setItem(table_row, 1, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][3])))
+                self.tableCTHD.setItem(table_row, 2, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][4])))               
+            self.tableCTHD.setItem(table_row, 3, ip.QTableWidgetItem(str(row[1])))
+            self.tableCTHD.setItem(table_row, 4, ip.QTableWidgetItem(str(row[2])))
+            self.tableCTHD.setItem(table_row, 5, ip.QTableWidgetItem(str(row[3])))
+            self.tableCTHD.setItem(table_row, 6, ip.QTableWidgetItem(str(row[4])))
+            self.tableCTHD.setItem(table_row, 7, ip.QTableWidgetItem(str(row[5])))
+            self.tableCTHD.setItem(table_row, 8, ip.QTableWidgetItem(str(row[6])))
+            self.tableCTHD.setItem(table_row, 9, ip.QTableWidgetItem(str(row[7])))
+            self.tableCTHD.setItem(table_row, 10, ip.QTableWidgetItem(str(row[8])))
+            self.tableCTHD.setItem(table_row, 11, ip.QTableWidgetItem(str(row[9])))
+            sum += (row[4] * row[5])
+            table_row += 1
+        self.txtTongTienCTHD.setText(str(sum))
+    def ShowALLCTHoaDonByMaMuonTraMT(self):
+        sum = 0
+        if self.is_handling_event:
+            return
+
+        self.is_handling_event = True
+
+        try:
+            selected_text = self.cbbMHDCTHD.currentText()
+            for i in ip.DAL_HoaDonMT.ShowAll(str(selected_text)):
+                self.txtMADGCTHD.setText(str(i[3]))
+                self.txtMNVCTHD.setText(str(i[4]))
+
+            self.tableCTHD.setRowCount(ip.DAL_ChiTietHoaDonMT.SearchAllCTHDByMaMuonTra(str(selected_text)).__len__())
+            self.tableCTHD.setColumnCount(12)
+            self.tableCTHD.setHorizontalHeaderLabels(["mã hóa đơn", "Mã độc giả", "Mã nhân viên", "Mã sách",
+                                                        "Tên sách", "Tên tác giả", "Giá", "Số lương",
+                                                        "Ngày mượn, Ngày trả dự kiến, Ngày trả thực tế", "Trạng thái"])
+            table_row = 0
+            for row in ip.DAL_ChiTietHoaDonMT.SearchAllCTHDByMaMuonTra(str(selected_text)):
+                self.tableCTHD.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+                for i in ip.DAL_HoaDonMT.ShowAll(str(row[0])):
+                    self.tableCTHD.setItem(table_row, 1, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][3])))
+                    self.tableCTHD.setItem(table_row, 2, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][4])))               
+                self.tableCTHD.setItem(table_row, 3, ip.QTableWidgetItem(str(row[1])))
+                self.tableCTHD.setItem(table_row, 4, ip.QTableWidgetItem(str(row[2])))
+                self.tableCTHD.setItem(table_row, 5, ip.QTableWidgetItem(str(row[3])))
+                self.tableCTHD.setItem(table_row, 6, ip.QTableWidgetItem(str(row[4])))
+                self.tableCTHD.setItem(table_row, 7, ip.QTableWidgetItem(str(row[5])))
+                self.tableCTHD.setItem(table_row, 8, ip.QTableWidgetItem(str(row[6])))
+                self.tableCTHD.setItem(table_row, 9, ip.QTableWidgetItem(str(row[7])))
+                self.tableCTHD.setItem(table_row, 10, ip.QTableWidgetItem(str(row[8])))
+                self.tableCTHD.setItem(table_row, 11, ip.QTableWidgetItem(str(row[9])))
+                sum += (row[4] * row[5])
+                table_row += 1
+        finally:
+            self.is_handling_event = False
+        
+        self.txtTongTienCTHD.setText(str(sum))
+
+    def ShowSachBYMaSach(self):
+        if self.is_handling_event:
+            return
+
+        self.is_handling_event = True
+
+        try:
+            selected_text = self.cbbMaSachCTHD.currentText()
+            for i in ip.DAL_Sach.SearchBookByMaSach(str(selected_text)):
+                self.txtTenSachCTHD.setText(str(i[1]))
+                self.txtTenTGCTHD.setText(str(i[2]))
+                self.txtGiaCTHD.setText(str(i[3]))
+        finally:
+            self.is_handling_event = False
+
+
+    def tableCTHoaDonMT_Clicked(self, row, column):
+        if self.is_handling_event:
+            return
+
+        self.is_handling_event = True
+
+        try:
+            ngayMuon = ip.QDate.fromString(self.tableCTHD.item(row, 8).text(), "yyyy-MM-dd")
+            ngayTra = ip.QDate.fromString(self.tableCTHD.item(row, 10).text(), "yyyy-MM-dd")
+            ngayDuKien = ip.QDate.fromString(self.tableCTHD.item(row, 9).text(), "yyyy-MM-dd")
+
+            maHoaDon = self.tableCTHD.item(row, 0).text()
+            for i in range(self.cbbMHDCTHD.count()):
+                if(maHoaDon == self.cbbMHDCTHD.itemText(i)):
+                    self.cbbMHDCTHD.setCurrentIndex(i)
+
+            self.txtMADGCTHD.setText(self.tableCTHD.item(row, 1).text())
+            self.txtMNVCTHD.setText(self.tableCTHD.item(row, 2).text())
+
+            maSach = self.tableCTHD.item(row, 3).text()
+            for i in range(self.cbbMaSachCTHD.count()):
+                if(maSach == self.cbbMaSachCTHD.itemText(i)):
+                    self.cbbMaSachCTHD.setCurrentIndex(i)
+
+            self.txtTenSachCTHD.setText(self.tableCTHD.item(row, 4).text())
+            self.txtTenTGCTHD.setText(self.tableCTHD.item(row, 5).text())
+            self.txtGiaCTHD.setText(self.tableCTHD.item(row, 6).text())
+            self.txtSoLuongCTHD.setText(self.tableCTHD.item(row, 7).text())
+            self.dateNgayMuonCTHD.setDate(ngayMuon)
+            self.dateNgayTraDuKienCTHD.setDate(ngayDuKien)
+            if ngayTra.isValid():
+                self.dateNgayTraThucTeCTHD.setDate(ngayTra)
+            else:
+                self.dateNgayTraThucTeCTHD.setDate(QDate(2000, 1, 1))
+
+
+            trangThai = self.tableCTHD.item(row, 11).text()
+            for i in range(self.cbbTrangThaiCTHD.count()):
+                if(trangThai == self.cbbTrangThaiCTHD.itemText(i)):
+                    self.cbbTrangThaiCTHD.setCurrentIndex(i)
+        finally:
+            self.is_handling_event = False
+
+
+    #Thêm sách vào chi tiết hóa đơn
+    def AddCTHoaDonMuontra(self):
+        if(self.check == True):
+            self.ShowALLCTHoaDonByMaMuonTraMT()
+            self.txtSoLuongCTHD.setText("")
+            self.dateNgayMuonCTHD.setDate(QDate(2024, 6, 22))
+            self.dateNgayTraDuKienCTHD.setDate(QDate(2024, 6, 22))
+            self.dateNgayTraThucTeCTHD.setDate(QDate(2024, 6, 22))
+            self.cbbTrangThaiCTHD.setCurrentIndex(0)
+            self.check = False
+            self.btnAddHD.setText("Lưu")
+        else:
+            maHD = self.cbbMHDCTHD.currentText()
+            maSach = self.cbbMaSachCTHD.currentText()
+            tenSach = self.txtTenSachCTHD.text()
+            tenTG = self.txtTenTGCTHD.text()
+            Gia = self.txtGiaCTHD.text()
+            soLuong = self.txtSoLuongCTHD.text()
+            ngayMuon = self.dateNgayMuonCTHD.date().toString("yyyy-MM-dd")
+            ngayTraDuKien = self.dateNgayTraDuKienCTHD.date().toString("yyyy-MM-dd")
+            ngayTraThucTe = self.dateNgayTraThucTeCTHD.date().toString("yyyy-MM-dd")
+            trangThai = self.cbbTrangThaiCTHD.currentText()
+            kt = ip.DAL_ChiTietHoaDonMT.AddCTHoaDonMuonTra(maHD, maSach, tenSach, tenTG, Gia, soLuong,
+                                                        ngayMuon, ngayTraDuKien, ngayTraThucTe, trangThai)
+            if kt == 1:
+                ip.QMessageBox.information(self, "Thông báo", "Thêm thành công!")
+                self.ShowALLCTHoaDonByMaMuonTraMT()
+                self.btnAddHD.setText("Thêm")
+            else:
+                ip.QMessageBox.information(self, "Thông báo", "Thêm không thành công!")
+
+
+    def SetDefaultCTHoaDonTxt(self):
+        self.txtMADGCTHD.setText("")
+        self.txtMNVCTHD.setText("")
+        self.txtTenSachCTHD.setText("")
+        self.txtTenTGCTHD.setText("")
+        self.txtGiaCTHD.setText("")
+        self.txtSoLuongCTHD.setText("")
+        self.dateNgayMuonCTHD.setDate(QDate(2024, 6, 22))
+        self.dateNgayTraDuKienCTHD.setDate(QDate(2024, 6, 22))
+        self.dateNgayTraThucTeCTHD.setDate(QDate(2024, 6, 22))
+        self.cbbTrangThaiCTHD.setCurrentIndex(0)
+        self.check = True
+
+    def DeleteCTHDByMaMuonTraMaSach(self):
+        txtMaHoaDon = self.cbbMHDCTHD.currentText()
+        txtMaSach = self.cbbMaSachCTHD.currentText()
+        kt = ip.DAL_ChiTietHoaDonMT.DeleteCTHDByMaMuontraMaSach(txtMaHoaDon, txtMaSach)
+        if kt == 1:
+            ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
+            self.ShowALLCTHoaDonByMaMuonTraMT()
+            self.SetDefaultCTHoaDonTxt()
+        else:
+            ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
+
+
+    #update sản phẩm trong chi tiết hóa đơn
+    def UpdateCTHoaDonMuonTra(self):
+        maHD = self.cbbMHDCTHD.currentText()
+        maSach = self.cbbMaSachCTHD.currentText()
+        tenSach = self.txtTenSachCTHD.text()
+        tenTG = self.txtTenTGCTHD.text()
+        Gia = self.txtGiaCTHD.text()
+        soLuong = self.txtSoLuongCTHD.text()
+        ngayMuon = self.dateNgayMuonCTHD.date().toString("yyyy-MM-dd")
+        ngayTraDuKien = self.dateNgayTraDuKienCTHD.date().toString("yyyy-MM-dd")
+        ngayTraThucTe = self.dateNgayTraThucTeCTHD.date().toString("yyyy-MM-dd")
+        trangThai = self.cbbTrangThaiCTHD.currentText()
+        kt = ip.DAL_ChiTietHoaDonMT.UpdateCTHoaDonMuonTra(maHD, maSach, tenSach, tenTG, Gia, soLuong,
+                                                        ngayMuon, ngayTraDuKien, ngayTraThucTe, trangThai)
+        if kt == 1:
+            ip.QMessageBox.information(self, "Thông báo", "update thành công!")
+            self.SetDefaultCTHoaDonTxt()
+            self.ShowALLCTHoaDonByMaMuonTraMT()
+        else:
+            ip.QMessageBox.information(self, "Thông báo", "update không thành công!")
+        self.check = True
+    
+    def SearchCTHoaDonMuonTra(self):
+        maTenSach_Muontra = self.txtSearchCTHD.text()
+        self.tableCTHD.setRowCount(ip.DAL_ChiTietHoaDonMT.SearchCTHoaDonMuonTra(maTenSach_Muontra).__len__())
+        self.tableCTHD.setColumnCount(12)
+        self.tableCTHD.setHorizontalHeaderLabels(["mã hóa đơn", "Mã độc giả", "Mã nhân viên", "Mã sách",
+                                                    "Tên sách", "Tên tác giả", "Giá", "Số lương",
+                                                    "Ngày mượn, Ngày trả dự kiến, Ngày trả thực tế", "Trạng thái"])
+        table_row = 0
+        for row in ip.DAL_ChiTietHoaDonMT.SearchCTHoaDonMuonTra(str(maTenSach_Muontra)):
+            self.tableCTHD.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+            for i in ip.DAL_HoaDonMT.ShowAll(str(row[0])):
+                self.tableCTHD.setItem(table_row, 1, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][3])))
+                self.tableCTHD.setItem(table_row, 2, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][4])))               
+            self.tableCTHD.setItem(table_row, 3, ip.QTableWidgetItem(str(row[1])))
+            self.tableCTHD.setItem(table_row, 4, ip.QTableWidgetItem(str(row[2])))
+            self.tableCTHD.setItem(table_row, 5, ip.QTableWidgetItem(str(row[3])))
+            self.tableCTHD.setItem(table_row, 6, ip.QTableWidgetItem(str(row[4])))
+            self.tableCTHD.setItem(table_row, 7, ip.QTableWidgetItem(str(row[5])))
+            self.tableCTHD.setItem(table_row, 8, ip.QTableWidgetItem(str(row[6])))
+            self.tableCTHD.setItem(table_row, 9, ip.QTableWidgetItem(str(row[7])))
+            self.tableCTHD.setItem(table_row, 10, ip.QTableWidgetItem(str(row[8])))
+            self.tableCTHD.setItem(table_row, 11, ip.QTableWidgetItem(str(row[9])))
+            table_row += 1
+
+    def PrintCTMuonTratoExcel(self):
+        maMuontra = self.cbbMHDCTHD.currentText()
+        ip.DAL_ChiTietHoaDonMT.XuatFileCTDHMuonTra(maMuontra)
+#endregion ################## Chi tiết hóa đơn ################################
 
 
 
 app = QApplication(ip.sys.argv)
 widget = ip.QtWidgets.QStackedWidget()
-login_f = login()
-mainGui_f = MySideBar()
+login_f = Login()
 widget.addWidget(login_f)
-widget.addWidget(mainGui_f)
 widget.setCurrentIndex(0)
 widget.setFixedHeight(436)
 widget.setFixedWidth(877)

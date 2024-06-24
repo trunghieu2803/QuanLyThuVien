@@ -56,6 +56,15 @@ def SearchBook(matenSach):
     conn.close()
     return rs
 
+def SearchBookByMaSach(masach):
+    conn = ConnectDB.connect_db()
+    qr = "SELECT * FROM sach WHERE masach = %s"
+    cs = conn.cursor()
+    cs.execute(qr, (masach,))
+    rs = cs.fetchall()
+    conn.close()
+    return rs
+
 import openpyxl
 def XuatFileBook():
     conn = ConnectDB.connect_db()

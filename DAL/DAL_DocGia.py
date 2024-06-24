@@ -48,6 +48,15 @@ def SearchDocGia(maTenDocgia):
     conn.close()
     return rs
 
+def SearchMaDocGia(maDocGia):
+    conn = ConnectDB.connect_db()
+    qr = "SELECT * FROM Docgia WHERE madocgia LIKE '%"+maDocGia+"%'"
+    cs = conn.cursor()
+    cs.execute(qr)
+    rs = cs.fetchall()
+    conn.close()
+    return rs
+
 import openpyxl
 def XuatFileDocGia():
     conn = ConnectDB.connect_db()

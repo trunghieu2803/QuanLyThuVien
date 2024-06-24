@@ -47,6 +47,15 @@ def SearchNhanVien(maTenNhanvien):
     conn.close()
     return rs
 
+def SearchMaNhanVien(maNhanvien):
+    conn = ConnectDB.connect_db()
+    qr = "SELECT * FROM nhanvien WHERE maNV LIKE '%"+maNhanvien+"%'"
+    cs = conn.cursor()
+    cs.execute(qr)
+    rs = cs.fetchall()
+    conn.close()
+    return rs
+
 import openpyxl
 def XuatFileNhanVien():
     conn = ConnectDB.connect_db()
