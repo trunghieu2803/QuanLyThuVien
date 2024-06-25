@@ -4,7 +4,7 @@ from ChucNang import Ui_MainWindow
 from PyQt6.QtCore import QDate
 class Login(QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super(Login, self).__init__()
+        super().__init__()
         ip.uic.loadUi('dangnhap.ui', self) 
 
         self.btnDangNhap.clicked.connect(self.CheckLogin)
@@ -36,10 +36,9 @@ class MySideBar(QMainWindow, Ui_MainWindow):
     def __init__(self):
         self.check = True
         self.is_handling_event = False
-        super(MySideBar, self).__init__()
+        super().__init__()
         ip.uic.loadUi('ChucNang.ui', self)
         self.setWindowTitle("SideBar Menu")
-
         self.switch_to_trangchuPage()
         #chuc nang Book
         self.ShowBooks()
@@ -110,6 +109,12 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         self.btnXuatFileCTHD.clicked.connect(self.PrintCTMuonTratoExcel)
 
 
+        #Thống kê 
+        self.btnThongKeAll.clicked.connect(self.showDSTK)
+        self.XuatExcel.clicked.connect(self.xuatFileExcelDSTK)
+
+
+
 
         #chuyển trang
         self.btnTrangChu.clicked.connect(self.switch_to_trangchuPage)
@@ -118,11 +123,12 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         self.btnDocGia.clicked.connect(self.switch_to_DocgiaPage)
         self.btnHoaDonMuonTra.clicked.connect(self.switch_to_HoaDonMuonTraPage)
         self.btnMuonTra.clicked.connect(self.switch_to_muonTraPage)
+        self.btnThongKe.clicked.connect(self.switch_to_ThongKeTraPage)
         self.btnDangXuat.clicked.connect(self.switch_to_DangXuatPage)
 
     def switch_to_trangchuPage(self):
-        print(ip.checkChucVu)
         self.btnNhanVien.setEnabled(ip.checkChucVu)
+        self.btnThongKe.setEnabled(ip.checkChucVu)
         self.tabWidget.setCurrentIndex(0)
     def switch_to_sachPage(self):
         self.ShowBooks()
@@ -132,10 +138,12 @@ class MySideBar(QMainWindow, Ui_MainWindow):
     def switch_to_DocgiaPage(self):
         self.tabWidget.setCurrentIndex(3) 
     def switch_to_HoaDonMuonTraPage(self):
-        self.tabWidget.setCurrentIndex(4)   
+        self.tabWidget.setCurrentIndex(4)  
     def switch_to_muonTraPage(self):
         self.ShowALLCTHoaDonMT()
         self.tabWidget.setCurrentIndex(5)
+    def switch_to_ThongKeTraPage(self):
+        self.tabWidget.setCurrentIndex(6) 
     def switch_to_DangXuatPage(self):
         reply = ip.QMessageBox.question(self, 'Xác nhận', 
                                      "Bạn có muốn đăng xuất không?", 
@@ -144,8 +152,8 @@ class MySideBar(QMainWindow, Ui_MainWindow):
 
         if reply == ip.QMessageBox.StandardButton.Yes:
             print("dang xuat " + str(ip.checkChucVu))
-            self.switch_to_trangchuPage()
-            ip.glchucvu = ""
+            self.btnNhanVien.setEnabled(False)
+            self.btnThongKe.setEnabled(False)
             widget.move(300, 200)
             widget.setFixedHeight(436)
             widget.setFixedWidth(877)
@@ -233,19 +241,21 @@ class MySideBar(QMainWindow, Ui_MainWindow):
             ip.QMessageBox.information(self, "Thông báo", "update không thành công!")
 
     def deleteBook(self):
-        maSach = self.txtMaSach.text()
-        kt = ip.DAL_Sach.DeleteBook(maSach)
-        if kt == 1:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
-            self.txtMaSach.setText("")
-            self.txtTensach.setText("")
-            self.txtTacGia.setText("")
-            self.txtGiaTien.setText("")
-            self.txtSoLuong.setText("")
-            self.ShowBooks()
-        else:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
-
+        try:
+            maSach = self.txtMaSach.text()
+            kt = ip.DAL_Sach.DeleteBook(maSach)
+            if kt == 1:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
+                self.txtMaSach.setText("")
+                self.txtTensach.setText("")
+                self.txtTacGia.setText("")
+                self.txtGiaTien.setText("")
+                self.txtSoLuong.setText("")
+                self.ShowBooks()
+            else:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
+        except:
+            print(ip.QMessageBox.information(self, "Thông báo", "đã được sử dụng"))
 #tìm kiếm sách
     def searchBook(self):
         tenSach = self.txtSearchBook.text()
@@ -373,15 +383,17 @@ class MySideBar(QMainWindow, Ui_MainWindow):
 
 
     def DeleteNhanVien(self):
-        txtMaNV = self.txtMaNV.text()
-        kt = ip.DAL_NhanVien.DeleteNhanVien(txtMaNV)
-        if kt == 1:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
-            self.ShowALLNhanvien()
-            self.SetDefaultNhanVienTxt()
-        else:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
-
+        try:
+            txtMaNV = self.txtMaNV.text()
+            kt = ip.DAL_NhanVien.DeleteNhanVien(txtMaNV)
+            if kt == 1:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
+                self.ShowALLNhanvien()
+                self.SetDefaultNhanVienTxt()
+            else:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
+        except:
+            ip.QMessageBox.information(self, "Thông báo", "không thành công vì có trong hóa đơn!!")
 
     def searchNhanVien(self):
         maTenSach = self.txtSearchNV.text()
@@ -466,15 +478,17 @@ class MySideBar(QMainWindow, Ui_MainWindow):
 
 
     def DeleteDocGia(self):
-        txtMaDG = self.txtMaDG.text()
-        kt = ip.DAL_DocGia.DeleteDocGia(txtMaDG)
-        if kt == 1:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
-            self.ShowALLDocGia()
-            self.SetDefaultDocgiaTxt()
-        else:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
-
+        try:
+            txtMaDG = self.txtMaDG.text()
+            kt = ip.DAL_DocGia.DeleteDocGia(txtMaDG)
+            if kt == 1:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
+                self.ShowALLDocGia()
+                self.SetDefaultDocgiaTxt()
+            else:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
+        except:
+                ip.QMessageBox.information(self, "Thông báo", "không thành công vì có trong hóa đơn!")
     def UpdateDocGia(self):
         ma = self.txtMaDG.text()
         ten = self.txtHoTenDG.text()
@@ -599,15 +613,17 @@ class MySideBar(QMainWindow, Ui_MainWindow):
 
 
     def DeleteHoaDon(self):
-        txtMaHD = self.txtMaHD.text()
-        kt = ip.DAL_HoaDonMT.DeleteHoaDonMuonTra(txtMaHD)
-        if kt == 1:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
-            self.ShowALLHoaDonMT()
-            self.SetDefaultHoaDonTxt()
-        else:
-            ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
-
+        try:
+            txtMaHD = self.txtMaHD.text()
+            kt = ip.DAL_HoaDonMT.DeleteHoaDonMuonTra(txtMaHD)
+            if kt == 1:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa thành công!")
+                self.ShowALLHoaDonMT()
+                self.SetDefaultHoaDonTxt()
+            else:
+                ip.QMessageBox.information(self, "Thông báo", "Xóa không thành công!")
+        except:
+            ip.QMessageBox.information(self, "Thông báo", "không thành công vì có sản phẩm trong hóa đơn!!")
 
     def UpdateHoaDon(self):
         ma = self.txtMaHD.text()
@@ -668,6 +684,7 @@ class MySideBar(QMainWindow, Ui_MainWindow):
             self.tableCTHD.setItem(table_row, 11, ip.QTableWidgetItem(str(row[9])))
             sum += (row[4] * row[5])
             table_row += 1
+        self.txtTongTienThongKe.setText(str(sum))
         self.txtTongTienCTHD.setText(str(sum))
     def ShowALLCTHoaDonByMaMuonTraMT(self):
         sum = 0
@@ -771,35 +788,37 @@ class MySideBar(QMainWindow, Ui_MainWindow):
 
     #Thêm sách vào chi tiết hóa đơn
     def AddCTHoaDonMuontra(self):
-        if(self.check == True):
-            self.ShowALLCTHoaDonByMaMuonTraMT()
-            self.txtSoLuongCTHD.setText("")
-            self.dateNgayMuonCTHD.setDate(QDate(2024, 6, 22))
-            self.dateNgayTraDuKienCTHD.setDate(QDate(2024, 6, 22))
-            self.dateNgayTraThucTeCTHD.setDate(QDate(2024, 6, 22))
-            self.cbbTrangThaiCTHD.setCurrentIndex(0)
-            self.check = False
-            self.btnAddHD.setText("Lưu")
-        else:
-            maHD = self.cbbMHDCTHD.currentText()
-            maSach = self.cbbMaSachCTHD.currentText()
-            tenSach = self.txtTenSachCTHD.text()
-            tenTG = self.txtTenTGCTHD.text()
-            Gia = self.txtGiaCTHD.text()
-            soLuong = self.txtSoLuongCTHD.text()
-            ngayMuon = self.dateNgayMuonCTHD.date().toString("yyyy-MM-dd")
-            ngayTraDuKien = self.dateNgayTraDuKienCTHD.date().toString("yyyy-MM-dd")
-            ngayTraThucTe = self.dateNgayTraThucTeCTHD.date().toString("yyyy-MM-dd")
-            trangThai = self.cbbTrangThaiCTHD.currentText()
-            kt = ip.DAL_ChiTietHoaDonMT.AddCTHoaDonMuonTra(maHD, maSach, tenSach, tenTG, Gia, soLuong,
-                                                        ngayMuon, ngayTraDuKien, ngayTraThucTe, trangThai)
-            if kt == 1:
-                ip.QMessageBox.information(self, "Thông báo", "Thêm thành công!")
+        try:
+            if(self.check == True):
                 self.ShowALLCTHoaDonByMaMuonTraMT()
-                self.btnAddHD.setText("Thêm")
+                self.txtSoLuongCTHD.setText("")
+                self.dateNgayMuonCTHD.setDate(QDate(2024, 6, 22))
+                self.dateNgayTraDuKienCTHD.setDate(QDate(2024, 6, 22))
+                self.dateNgayTraThucTeCTHD.setDate(QDate())
+                self.cbbTrangThaiCTHD.setCurrentIndex(0)
+                self.check = False
+                self.btnAddCTHD.setText("Lưu")
             else:
-                ip.QMessageBox.information(self, "Thông báo", "Thêm không thành công!")
-
+                maHD = self.cbbMHDCTHD.currentText()
+                maSach = self.cbbMaSachCTHD.currentText()
+                tenSach = self.txtTenSachCTHD.text()
+                tenTG = self.txtTenTGCTHD.text()
+                Gia = self.txtGiaCTHD.text()
+                soLuong = self.txtSoLuongCTHD.text()
+                ngayMuon = self.dateNgayMuonCTHD.date().toString("yyyy-MM-dd")
+                ngayTraDuKien = self.dateNgayTraDuKienCTHD.date().toString("yyyy-MM-dd")
+                ngayTraThucTe = self.dateNgayTraThucTeCTHD.date().toString("yyyy-MM-dd")
+                trangThai = self.cbbTrangThaiCTHD.currentText()
+                kt = ip.DAL_ChiTietHoaDonMT.AddCTHoaDonMuonTra(maHD, maSach, tenSach, tenTG, Gia, soLuong,
+                                                            ngayMuon, ngayTraDuKien, ngayTraThucTe, trangThai)
+                if kt == 1:
+                    ip.QMessageBox.information(self, "Thông báo", "Thêm thành công!")
+                    self.ShowALLCTHoaDonByMaMuonTraMT()
+                    self.btnAddCTHD.setText("Thêm")
+                else:
+                    ip.QMessageBox.information(self, "Thông báo", "Thêm không thành công!")
+        except:
+            ip.QMessageBox.information(self, "Thông báo", "Sản phẩm đã được thêm vào\n vui lòng chọn mã khác!")
 
     def SetDefaultCTHoaDonTxt(self):
         self.txtMADGCTHD.setText("")
@@ -838,6 +857,12 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         ngayTraDuKien = self.dateNgayTraDuKienCTHD.date().toString("yyyy-MM-dd")
         ngayTraThucTe = self.dateNgayTraThucTeCTHD.date().toString("yyyy-MM-dd")
         trangThai = self.cbbTrangThaiCTHD.currentText()
+        if(trangThai == "Đã Trả"):
+            if(ngayTraThucTe < ngayTraDuKien):
+                ip.QMessageBox.information(self, "Thông báo", "ngày trả dự kiến lớn hơn ngày trả thực tế!")
+                return
+            else:
+                soLuong = "0"
         kt = ip.DAL_ChiTietHoaDonMT.UpdateCTHoaDonMuonTra(maHD, maSach, tenSach, tenTG, Gia, soLuong,
                                                         ngayMuon, ngayTraDuKien, ngayTraThucTe, trangThai)
         if kt == 1:
@@ -877,7 +902,119 @@ class MySideBar(QMainWindow, Ui_MainWindow):
         ip.DAL_ChiTietHoaDonMT.XuatFileCTDHMuonTra(maMuontra)
 #endregion ################## Chi tiết hóa đơn ################################
 
+#region ##################### Thống kê ###########################################
+    def showDSTK(self):
+        cbbText = self.cbbThongKe.currentText()
+        if cbbText == "Toàn bộ sách":
+            self.tableThongKe.setRowCount(ip.DAL_Sach.showBookAll().__len__())
+            self.tableThongKe.setColumnCount(5)
+            self.tableThongKe.setHorizontalHeaderLabels(["Mã sách", "Tên sách", "Tên Tác Giả", "Giá", "Số lượng"])
+            table_row = 0
+            for row in ip.DAL_Sach.showBookAll():
+                self.tableThongKe.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+                self.tableThongKe.setItem(table_row, 1, ip.QTableWidgetItem(str(row[1])))
+                self.tableThongKe.setItem(table_row, 2, ip.QTableWidgetItem(str(row[2])))
+                self.tableThongKe.setItem(table_row, 3, ip.QTableWidgetItem(str(row[3])))
+                self.tableThongKe.setItem(table_row, 4, ip.QTableWidgetItem(str(row[4])))
+                table_row += 1
+        elif cbbText == "Toàn bộ nhân viên":
+            self.tableThongKe.setRowCount(ip.DAL_NhanVien.showALLNhanVien().__len__())
+            self.tableThongKe.setColumnCount(9)
+            self.tableThongKe.setHorizontalHeaderLabels(["Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh",
+                                                        "Địa chỉ", "Số điện thoại", "tên đăng nhập", "Mật khẩu", "Chức Vụ"])
+            table_row = 0
+            for row in ip.DAL_NhanVien.showALLNhanVien():
+                self.tableThongKe.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+                self.tableThongKe.setItem(table_row, 1, ip.QTableWidgetItem(str(row[1])))
+                self.tableThongKe.setItem(table_row, 2, ip.QTableWidgetItem(str(row[2])))
+                self.tableThongKe.setItem(table_row, 3, ip.QTableWidgetItem(str(row[3])))
+                self.tableThongKe.setItem(table_row, 4, ip.QTableWidgetItem(str(row[4])))
+                self.tableThongKe.setItem(table_row, 5, ip.QTableWidgetItem(str(row[5])))
+                self.tableThongKe.setItem(table_row, 6, ip.QTableWidgetItem(str(row[6])))
+                self.tableThongKe.setItem(table_row, 7, ip.QTableWidgetItem(str(row[7])))
+                self.tableThongKe.setItem(table_row, 8, ip.QTableWidgetItem(str(row[8])))
+                table_row += 1
+        elif cbbText == "Toàn bộ độc giả":
+            self.tableThongKe.setRowCount(ip.DAL_DocGia.showAllDocGia().__len__())
+            self.tableThongKe.setColumnCount(5)
+            self.tableThongKe.setHorizontalHeaderLabels(["Mã độc giả", "Tên độc giả", "Địa chỉ",
+                                                        "Giới tính", "Số điện thoại"])
+            table_row = 0
+            for row in ip.DAL_DocGia.showAllDocGia():
+                self.tableThongKe.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+                self.tableThongKe.setItem(table_row, 1, ip.QTableWidgetItem(str(row[1])))
+                self.tableThongKe.setItem(table_row, 2, ip.QTableWidgetItem(str(row[2])))
+                self.tableThongKe.setItem(table_row, 3, ip.QTableWidgetItem(str(row[3])))
+                self.tableThongKe.setItem(table_row, 4, ip.QTableWidgetItem(str(row[4])))
+                table_row += 1
+        elif cbbText == "Toàn bộ hóa đơn":
+            self.cbbDGHD.clear()
+            self.cbbMNVHD.clear()
+            for i in range(ip.DAL_DocGia.showAllDocGia().__len__()):
+                self.cbbDGHD.addItem(str(i + 1))
 
+            for i in range(ip.DAL_NhanVien.showALLNhanVien().__len__()):
+                self.cbbMNVHD.addItem(str(i + 1))
+
+            self.tableThongKe.setRowCount(ip.DAL_HoaDonMT.ShowAllHDMuonTra().__len__())
+            self.tableThongKe.setColumnCount(5)
+            self.tableThongKe.setHorizontalHeaderLabels(["mã hóa đơn", "Tên hóa đơn", "Ngày mượn",
+                                                        "Mã độc giả", "Mã nhân viên"])
+            table_row = 0
+            for row in ip.DAL_HoaDonMT.ShowAllHDMuonTra():
+                self.tableThongKe.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+                self.tableThongKe.setItem(table_row, 1, ip.QTableWidgetItem(str(row[1])))
+                self.tableThongKe.setItem(table_row, 2, ip.QTableWidgetItem(str(row[2])))
+                self.tableThongKe.setItem(table_row, 3, ip.QTableWidgetItem(str(row[3])))
+                self.tableThongKe.setItem(table_row, 4, ip.QTableWidgetItem(str(row[4])))
+                table_row += 1
+        elif cbbText == "Toàn bộ chi tiết háo đơn":
+            sum = 0
+            self.cbbMHDCTHD.clear()
+            self.cbbMaSachCTHD.clear()
+
+            for i in range(ip.DAL_HoaDonMT.ShowAllHDMuonTra().__len__()):
+                self.cbbMHDCTHD.addItem(str(ip.DAL_HoaDonMT.ShowAllHDMuonTra()[i][0]))
+            
+            for i in range(ip.DAL_Sach.showBookAll().__len__()):
+                self.cbbMaSachCTHD.addItem(str(ip.DAL_Sach.showBookAll()[i][0]))
+
+            self.tableThongKe.setRowCount(ip.DAL_ChiTietHoaDonMT.ShowAllCTHDMuonTra().__len__())
+            self.tableThongKe.setColumnCount(12)
+            self.tableThongKe.setHorizontalHeaderLabels(["mã hóa đơn", "Mã độc giả", "Mã nhân viên", "Mã sách",
+                                                        "Tên sách", "Tên tác giả", "Giá", "Số lương",
+                                                        "Ngày mượn, Ngày trả dự kiến, Ngày trả thực tế", "Trạng thái"])
+            table_row = 0
+            for row in ip.DAL_ChiTietHoaDonMT.ShowAllCTHDMuonTra():
+                self.tableThongKe.setItem(table_row, 0, ip.QTableWidgetItem(str(row[0])))
+                for i in ip.DAL_HoaDonMT.ShowAll(str(row[0])):
+                    self.tableThongKe.setItem(table_row, 1, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][3])))
+                    self.tableThongKe.setItem(table_row, 2, ip.QTableWidgetItem(str(ip.DAL_HoaDonMT.ShowAll(str(row[0]))[0][4])))               
+                self.tableThongKe.setItem(table_row, 3, ip.QTableWidgetItem(str(row[1])))
+                self.tableThongKe.setItem(table_row, 4, ip.QTableWidgetItem(str(row[2])))
+                self.tableThongKe.setItem(table_row, 5, ip.QTableWidgetItem(str(row[3])))
+                self.tableThongKe.setItem(table_row, 6, ip.QTableWidgetItem(str(row[4])))
+                self.tableThongKe.setItem(table_row, 7, ip.QTableWidgetItem(str(row[5])))
+                self.tableThongKe.setItem(table_row, 8, ip.QTableWidgetItem(str(row[6])))
+                self.tableThongKe.setItem(table_row, 9, ip.QTableWidgetItem(str(row[7])))
+                self.tableThongKe.setItem(table_row, 10, ip.QTableWidgetItem(str(row[8])))
+                self.tableThongKe.setItem(table_row, 11, ip.QTableWidgetItem(str(row[9])))
+                sum += (row[4] * row[5])
+                table_row += 1
+            self.txtTongTienCTHD.setText(str(sum))
+    def xuatFileExcelDSTK(self):
+        cbbText = self.cbbThongKe.currentText()
+        if cbbText == "Toàn bộ sách":
+            ip.DAL_Sach.XuatFileBook()
+        elif cbbText == "Toàn bộ nhân viên":
+            ip.DAL_NhanVien.XuatFileNhanVien()
+        elif cbbText == "Toàn bộ độc giả":
+            ip.DAL_DocGia.XuatFileDocGia()
+        elif cbbText == "Toàn bộ hóa đơn": 
+            ip.DAL_HoaDonMT.XuatFileHoaDon()
+        elif cbbText == "Toàn bộ chi tiết háo đơn":   
+            ip.DAL_ChiTietHoaDonMT.XuatFileCTHoaDon()    
+#endregion #####################End Thống kê #####################################
 
 app = QApplication(ip.sys.argv)
 widget = ip.QtWidgets.QStackedWidget()

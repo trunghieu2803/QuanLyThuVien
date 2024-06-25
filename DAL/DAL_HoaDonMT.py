@@ -60,3 +60,20 @@ def ShowAll(maMuonTra):
     conn.close()
     return rs
 
+import openpyxl
+def XuatFileHoaDon():
+    conn = ConnectDB.connect_db()
+    cs = conn.cursor()
+    qr = "SELECT * FROM hdmuontra"
+    cs.execute(qr)
+    rs = cs.fetchall()
+    conn.close()
+    
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.column_dimensions['C'].width = 15
+    ws.append(["mã hóa đơn", "Tên hóa đơn", "Ngày mượn", "Mã độc giả", "Mã nhân viên"])
+    for row in rs:
+        ws.append(row)
+
+    wb.save('HoaDon.xlsx')

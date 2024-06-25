@@ -152,7 +152,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>460</y>
+       <y>520</y>
        <width>161</width>
        <height>61</height>
       </rect>
@@ -182,6 +182,27 @@
      </property>
      <property name="text">
       <string>Hóa đơn</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnThongKe">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>460</y>
+       <width>161</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Thống kê</string>
      </property>
     </widget>
    </widget>
@@ -246,7 +267,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>5</number>
+      <number>6</number>
      </property>
      <widget class="QWidget" name="tw1">
       <attribute name="title">
@@ -1746,7 +1767,7 @@
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab5">
+     <widget class="QWidget" name="tw5">
       <attribute name="title">
        <string>Page</string>
       </attribute>
@@ -2764,6 +2785,128 @@
          </widget>
         </widget>
        </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tw7">
+      <attribute name="title">
+       <string>Page</string>
+      </attribute>
+      <widget class="QComboBox" name="cbbThongKe">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>60</y>
+         <width>411</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <item>
+        <property name="text">
+         <string>Toàn bộ sách</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Toàn bộ nhân viên</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Toàn bộ độc giả</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Toàn bộ hóa đơn</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Toàn bộ chi tiết háo đơn</string>
+        </property>
+       </item>
+      </widget>
+      <widget class="QLabel" name="label_58">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>10</y>
+         <width>811</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>14</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Thống Kê&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="btnThongKeAll">
+       <property name="geometry">
+        <rect>
+         <x>470</x>
+         <y>60</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Thống kê</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="XuatExcel">
+       <property name="geometry">
+        <rect>
+         <x>610</x>
+         <y>60</y>
+         <width>131</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Xuất Excel</string>
+       </property>
+      </widget>
+      <widget class="QTableWidget" name="tableThongKe">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>100</y>
+         <width>691</width>
+         <height>411</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="txtTongTienThongKe">
+       <property name="geometry">
+        <rect>
+         <x>550</x>
+         <y>524</y>
+         <width>141</width>
+         <height>31</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_12">
+       <property name="geometry">
+        <rect>
+         <x>435</x>
+         <y>525</y>
+         <width>111</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Tổng tiền:</string>
+       </property>
       </widget>
      </widget>
     </widget>
