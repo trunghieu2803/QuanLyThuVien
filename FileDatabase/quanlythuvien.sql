@@ -110,30 +110,6 @@ INSERT INTO `hdmuontra` (`tenhdmuontra`, `ngaymuon`, `madocgia`, `manv`) VALUES
 ('HD05', '2024-06-05', 5, 5);
 
 -- Chèn dữ liệu vào bảng `ctmuontra`
-INSERT INTO `ctmuontra` (`mamuontra`, `masach`, `ngaymuon`, `ngaytradukien`, `ngaytrathucte`, `trangthai`) VALUES 
-(1, 1, '2024-06-01', '2024-06-15', NULL, 'Đang mượn'),
-(1, 2, '2024-06-01', '2024-06-15', NULL, 'Đang mượn'),
-(2, 3, '2024-06-02', '2024-06-16', NULL, 'Đang mượn'),
-(2, 4, '2024-06-02', '2024-06-16', NULL, 'Đang mượn'),
-(3, 5, '2024-06-03', '2024-06-17', NULL, 'Đang mượn'),
-(4, 1, '2024-06-04', '2024-06-18', NULL, 'Đang mượn'),
-(5, 2, '2024-06-05', '2024-06-19', NULL, 'Đang mượn'),
-(5, 3, '2024-06-05', '2024-06-19', NULL, 'Đang mượn');
-
-
--- Chèn dữ liệu vào bảng `ctmuontra`
-INSERT INTO `ctmuontra` (`mamuontra`, `masach`, `tentg`, `gia`, `soluong`, `ngaymuon`, `ngaytradukien`, `ngaytrathucte`, `trangthai`) VALUES 
-(1, 1, 'Nguyễn Văn A', 50.0, 1, '2024-06-01', '2024-06-15', NULL, 'Đang mượn'),
-(1, 2, 'Trần Văn B', 70.0, 1, '2024-06-01', '2024-06-15', NULL, 'Đang mượn'),
-(2, 3, 'Lê Thị C', 60.0, 1, '2024-06-02', '2024-06-16', NULL, 'Đang mượn'),
-(2, 4, 'Phạm Văn D', 55.0, 1, '2024-06-02', '2024-06-16', NULL, 'Đang mượn'),
-(3, 5, 'Nguyễn Thị E', 45.0, 1, '2024-06-03', '2024-06-17', NULL, 'Đang mượn'),
-(4, 1, 'Nguyễn Văn A', 50.0, 1, '2024-06-04', '2024-06-18', NULL, 'Đang mượn'),
-(5, 2, 'Trần Văn B', 70.0, 1, '2024-06-05', '2024-06-19', NULL, 'Đang mượn'),
-(5, 3, 'Lê Thị C', 60.0, 1, '2024-06-05', '2024-06-19', NULL, 'Đang mượn');
-
-
--- Chèn dữ liệu vào bảng `ctmuontra`
 INSERT INTO `ctmuontra` (`mamuontra`, `masach`, `tensach`, `tentg`, `gia`, `soluong`, `ngaymuon`, `ngaytradukien`, `ngaytrathucte`, `trangthai`) VALUES 
 (1, 1, 'Sách Giáo Khoa Toán', 'Nguyễn Văn A', 50.0, 1, '2024-06-01', '2024-06-15', NULL, 'Đang mượn'),
 (1, 2, 'Sách Lịch Sử Việt Nam', 'Trần Văn B', 70.0, 1, '2024-06-01', '2024-06-15', NULL, 'Đang mượn'),
