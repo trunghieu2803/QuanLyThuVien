@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>dangnhap</class>
+ <widget class="QMainWindow" name="dangnhap">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -32,20 +32,25 @@
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="btnDangNhap">
      <property name="geometry">
       <rect>
-       <x>120</x>
-       <y>270</y>
-       <width>93</width>
-       <height>28</height>
+       <x>110</x>
+       <y>240</y>
+       <width>121</width>
+       <height>41</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="text">
       <string>Đăng nhập</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="txbtaikhoan">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -54,8 +59,16 @@
        <height>41</height>
       </rect>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="placeholderText">
+      <string>ID</string>
+     </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_2">
+    <widget class="QLineEdit" name="txbmatkhau">
      <property name="geometry">
       <rect>
        <x>70</x>
@@ -63,6 +76,17 @@
        <width>211</width>
        <height>41</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
+     <property name="placeholderText">
+      <string>Password</string>
      </property>
     </widget>
     <widget class="QLabel" name="label">
@@ -81,19 +105,6 @@
      </property>
      <property name="text">
       <string>Đăng nhập</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="checkBox">
-     <property name="geometry">
-      <rect>
-       <x>200</x>
-       <y>220</y>
-       <width>81</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Quản lý</string>
      </property>
     </widget>
    </widget>
@@ -128,7 +139,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="Resource.qrc">:/Images/iconlogo.png</pixmap>
+      <pixmap>Images/iconlogo.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -167,6 +178,12 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>txbtaikhoan</tabstop>
+  <tabstop>txbmatkhau</tabstop>
+  <tabstop>btnDangNhap</tabstop>
+  <tabstop>label_2</tabstop>
+ </tabstops>
  <resources>
   <include location="Resource.qrc"/>
  </resources>
